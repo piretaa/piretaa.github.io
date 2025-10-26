@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IDEA FACTORY OÜ — Spordi-, hobi- ja muusikakauplus</title>
+  <meta name="description" content="IDEA FACTORY OÜ — kaasaegne jaemüüja, kes toob Eestisse nutika valiku sporditarbeid, hobikaupu ja muusikainstrumente. Professionaalne nõustamine, laoprotsessid ja jäätmete vähendamine." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="format-detection" content="telephone=no" />
+  <style>
+    /* ----------------------------
+       PÕHI-STIILID (ainult selles failis)
+       ---------------------------- */
+
+    :root{
+      --bg:#0f0f12;
+      --bg-soft:#17171c;
+      --ink:#e8e8ef;
+      --ink-dim:#bdbdd1;
+      --brand:#ff7a1a;
+      --brand-2:#f0b429;
+      --muted:#2a2a33;
+      --card:#1b1b22;
+      --ok:#3cc27a;
+      --err:#ff5a5f;
+      --shadow: 0 10px 30px rgba(0,0,0,.45);
+      --radius-xl: 18px;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --radius-sm: 8px;
+      --maxw: 1120px;
+      --speed: 340ms;
+      --ff: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Noto Sans, Apple Color Emoji, Segoe UI Emoji;
+    }
+
+    *{box-sizing: border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font:16px/1.6 var(--ff);
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+
+    a{color:var(--brand); text-decoration:none}
+    a:hover{opacity:.9}
+
+    /* Ülemine menüü */
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:50;
+      background:rgba(15,15,18,.86);
+      backdrop-filter:saturate(140%) blur(8px);
+      border-bottom:1px solid #21212a;
+    }
+    .nav__bar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      max-width:var(--maxw);
+      margin:0 auto;
+      padding:14px 20px;
+    }
+    .logo{
+      display:flex; align-items:center; gap:10px;
+      font-weight:800; letter-spacing:.2px;
+    }
+    .logo__mark{
+      width:32px; height:32px; border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, var(--brand), var(--brand-2));
+      box-shadow:0 0 0 3px rgba(255,122,26,.18), 0 8px 18px rgba(255,122,26,.25);
+    }
+    .nav__links{
+      display:flex; gap:18px; align-items:center; flex-wrap:wrap;
+    }
+    .nav__links a{
+      color:var(--ink);
+      padding:8px 12px;
+      border-radius:10px;
+      transition:background var(--speed), color var(--speed), transform var(--speed);
+      font-weight:600;
+      opacity:.95;
+    }
+    .nav__links a:hover{background:var(--muted); transform:translateY(-1px)}
+
+    .btn{
+      display:inline-block;
+      padding:12px 18px;
+      border-radius:12px;
+      font-weight:700;
+      background:linear-gradient(135deg,var(--brand),var(--brand-2));
+      color:#101014;
+      box-shadow:0 8px 16px rgba(255,122,26,.25);
+      transition:transform var(--speed), box-shadow var(--speed), filter var(--speed);
+      cursor:pointer;
+      border:0;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn:active{transform:translateY(0)}
+    .btn--ghost{
+      background:transparent; color:var(--ink);
+      border:1px solid #2d2d35; box-shadow:none;
+    }
+    .btn--ghost:hover{background:#20202a}
+
+    /* Kangelasplokk */
+    .hero{
+      position:relative;
+      isolation:isolate;
+      min-height:72vh;
+      display:grid;
+      align-items:center;
+      padding:80px 20px 40px;
+      overflow:hidden;
+      border-bottom:1px solid #1f1f27;
+    }
+    .hero::before{
+      /* taust-pilt muusika/spordi/hobi meeleolus */
+      content:"";
+      position:absolute; inset:0;
+      background-image:
+        linear-gradient(rgba(15,15,18,.50), rgba(15,15,18,.88)),
+        url('https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=2060&auto=format&fit=crop');
+      background-position:center;
+      background-size:cover;
+      z-index:-1;
+      transform:scale(1.02);
+      filter:saturate(105%);
+    }
+    .hero__inner{max-width:var(--maxw); margin:0 auto; display:grid; gap:26px}
+    .kicker{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:6px 10px; width:max-content;
+      border-radius:999px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12);
+      font-size:12px; letter-spacing:.3px; color:var(--ink-dim);
+    }
+    .hero h1{
+      margin:0;
+      font-size:clamp(28px, 6vw, 54px);
+      line-height:1.1;
+      text-shadow:0 10px 30px rgba(0,0,0,.5);
+    }
+    .hero p{
+      color:var(--ink-dim);
+      max-width:820px;
+      margin:0;
+      font-size:clamp(16px, 2.2vw, 20px);
+    }
+    .hero__cta{display:flex; gap:12px; flex-wrap:wrap}
+
+    /* Sektsioonide raamistik */
+    section{scroll-margin-top:84px}
+    .wrap{max-width:var(--maxw); margin:0 auto; padding:72px 20px}
+    .section{
+      position:relative;
+      background:linear-gradient(180deg,var(--bg), var(--bg-soft));
+      border-top:1px solid #1f1f27;
+    }
+    .section:nth-of-type(even){background:linear-gradient(180deg,var(--bg-soft), var(--bg))}
+    .section__title{
+      display:grid; gap:10px; margin-bottom:28px;
+    }
+    .section__title h2{
+      margin:0; font-size:28px; line-height:1.2;
+    }
+    .section__title p{margin:0; color:var(--ink-dim)}
+
+    /* Kaardid ja gridid */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:18px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid #262630;
+      border-radius:var(--radius-xl);
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+    .card h3{margin-top:4px}
+    .muted{color:var(--ink-dim)}
+
+    /* Teenused */
+    .service{
+      display:grid; gap:12px;
+      border-left:4px solid transparent;
+      transition:border-color var(--speed), transform var(--speed);
+    }
+    .service:hover{border-color:var(--brand); transform:translateY(-2px)}
+    .service__icon{
+      width:44px; height:44px; border-radius:12px;
+      display:grid; place-items:center;
+      background:linear-gradient(135deg,#23232c,#2f2f3a);
+      border:1px solid #3a3a48;
+      font-weight:900;
+    }
+
+    /* Loetelud */
+    .list{
+      display:grid; gap:12px; padding-left:18px; margin:0;
+    }
+    .list li{margin:0 0 0 6px}
+
+    /* Protsess */
+    .step{
+      display:grid; gap:8px; padding:18px; background:#15151b; border:1px dashed #2b2b36; border-radius:14px;
+    }
+    .arrow{
+      opacity:.6; text-align:center; margin:6px 0;
+    }
+
+    /* Galerii */
+    .gallery{
+      display:grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap:10px;
+    }
+    .gallery img{
+      width:100%; height:140px; object-fit:cover; border-radius:12px; border:1px solid #2b2b36;
+      transition:transform var(--speed), filter var(--speed);
+    }
+    .gallery img:hover{transform:scale(1.02)}
+
+    /* Jalus */
+    .footer{
+      background:#0c0c10;
+      border-top:1px solid #1b1b22;
+      color:var(--ink-dim);
+    }
+    .footer a{color:var(--ink)}
+    .footgrid{display:grid; gap:18px; grid-template-columns: 2fr 1fr 1fr}
+    .address{white-space:pre-line}
+
+    /* Modaalne kontaktivorm (ilma telefonita — Apple reeglid) */
+    .modal{
+      position:fixed; inset:0; display:none; place-items:center; background:rgba(0,0,0,.6);
+      z-index:90; padding:20px;
+    }
+    .modal[data-open="true"]{display:grid; animation:fadeIn var(--speed)}
+    @keyframes fadeIn{from{opacity:0} to{opacity:1}}
+    .dialog{
+      width:min(680px, 100%);
+      background:var(--card);
+      border:1px solid #2b2b36;
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      padding:22px;
+    }
+    .dialog__head{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px}
+    .x{
+      appearance:none; background:#222230; color:#fff; border:1px solid #343445;
+      width:36px; height:36px; border-radius:10px; cursor:pointer;
+    }
+    .form{
+      display:grid; gap:14px;
+      grid-template-columns: 1fr 1fr;
+    }
+    .form label{font-weight:600}
+    .form input, .form textarea{
+      width:100%; padding:12px 12px; border-radius:10px; border:1px solid #30303c; background:#13131a; color:var(--ink);
+    }
+    .form textarea{min-height:120px; grid-column:1 / -1; resize:vertical}
+    .form .full{grid-column:1 / -1}
+
+    /* Väikesed ekraanid */
+    @media (max-width: 860px){
+      .gallery{grid-template-columns: repeat(3, 1fr)}
+      .footgrid{grid-template-columns: 1fr}
+      .form{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" aria-label="Põhinavigeerimine">
+    <div class="nav__bar">
+      <div class="logo" aria-label="IDEA FACTORY OÜ">
+        <span class="logo__mark" aria-hidden="true"></span>
+        <span>IDEA FACTORY OÜ</span>
+      </div>
+      <div class="nav__links">
+        <a href="#algus">Avaleht</a>
+        <a href="#meist">Meie Lugu</a>
+        <a href="#teenused">Lahendused</a>
+        <a href="#voimekus">Miks meie</a>
+        <a href="#protsess">Kuidas töötame</a>
+        <a href="#kontaktid">Kontaktid</a>
+        <button class="btn btn--ghost" data-open-modal="#contact">Saada kiri</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header id="algus" class="hero" role="banner" aria-label="Tere tulemast IDEA FACTORY OÜ lehele">
+    <div class="hero__inner">
+      <span class="kicker">Spordi-, hobi- ja muusikapood • Laagri alevik</span>
+      <h1>Ideest lavale, rajale ja töölaudadele — pood, mis mõtleb nagu looja.</h1>
+      <p>
+        IDEA FACTORY OÜ koondab kvaliteetsed <strong>sporditarbed</strong>, <strong>hobikaubad</strong> ja
+        <strong>muusikainstrumendid</strong> ühe katuse alla. Meie valik sünnib koostöös klubide, treenerite, stuudiote ja harrastajatega,
+        et pakkuda püsivalt arenevaid tootevalikuid, remondiabi ning kestlikke tarneahelaid.
+      </p>
+      <div class="hero__cta">
+        <a class="btn" href="#teenused">Vaata teenuseid</a>
+        <button class="btn btn--ghost" data-open-modal="#contact">Küsi saadavust</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <section id="meist" class="section" aria-labelledby="meist-title">
+    <div class="wrap">
+      <div class="section__title">
+        <h2 id="meist-title">Kust tulevad head ideed? — <em>Meie teekond</em></h2>
+        <p class="muted">Ehitame poodi nagu lavaproovi: hoolikalt häälestades.</p>
+      </div>
+
+      <div class="grid">
+        <div class="card" style="grid-column: span 7;">
+          <p>
+            IDEA FACTORY OÜ sündis praktilisest vajadusest ühendada Eesti loome- ja harrastusmaailma varustus üheks läbimõeldud
+            ostukogemuseks. Me ei piirdu riiulitega — katsetame tooteid päriselt: staadionil, matkarajal ja helistuudios.
+          </p>
+          <p>
+            Meie tugevus on <strong>andmepõhine sortiment</strong>: kogume tagasisidet klubidelt ja klientidelt, mille põhjal
+            korrigeerime ladu igal hooajal. See hoiab hinnad ausad ja vähendab ületootmist.
+          </p>
+          <p>
+            Kohapeal pakume pillide hooldust, reketi pingutust, rulliku/laagri vahetust ning 3D-prinditud varuosi väikese remondina.
+            Koostööpartnerite võrgustik lubab tuua haruldasi varuosi alla nädalase tarneajaga.
+          </p>
+          <p>
+            Jätkusuutlikkus pole meil loosung, vaid <strong>vahetus praktikas</strong>: korduskasutusprogrammid, pakendivaba tarne
+            ning <em>buy-back</em> valitud instrumentidele, et algajad saaksid julgelt alustada.
+          </p>
+          <p>
+            Asume aadressil Pilliroo tn 39, Laagri alevik. Prooviruumis saab testida trummikomplekte, kitarrivõimekust ja
+            spordimaterjale (pallide surve, reketite raamid, rulluisurattad) enne ostuotsust.
+          </p>
+          <p>
+            Meie meeskond on segu treeneritest, tehnikutest ja heliinseneridest, kes räägivad sinu keelt — olgu eesmärgiks esimene
+            maraton, bändilaager või hobi-robotika klass.
+          </p>
+        </div>
+
+        <aside class="card" style="grid-column: span 5;">
+          <h3>Kiirfaktid</h3>
+          <ul class="list">
+            <li>4500+ kaupa laos, 180+ testitud hooajatooteid.</li>
+            <li>Prooviruum & workshop igal nädalal (registreerimine e-postiga).</li>
+            <li>Laenutus: pedaalid, akustilised trummikompaktid, spordikaamerad.</li>
+            <li>Ökoloogiline pakend ja korduskarbid kohalike tarnete jaoks.</li>
+            <li>Väikeparandused kohapeal — instrumentidest rulluisuni.</li>
+          </ul>
+          <button class="btn" data-open-modal="#contact" aria-haspopup="dialog">Broneeri proov</button>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="teenused" class="section" aria-labelledby="teenused-title">
+    <div class="wrap">
+      <div class="section__title">
+        <h2 id="teenused-title">Lahendused, mis panevad hobid tööle</h2>
+        <p class="muted">Kolm fookusteenust, igaühel selge tulemus.</p>
+      </div>
+
+      <div class="grid">
+        <div class="card service" style="grid-column: span 4;">
+          <div class="service__icon" aria-hidden="true">🎸</div>
+          <h3>Muusikainstrumentide valik & hooldus</h3>
+          <p>
+            Valime kitarre, digipianoid, trumme ja helitehnikat, mis sobivad Eesti kodudesse ja lavadele. Iga pill läbib
+            eelhäälestuse ja kontrolli. Kohapeal teeme keeltevahetust, trummikile paigaldust ning helikaablite jootmist.
+          </p>
+          <p class="muted">
+            Tulemuseks on pillid, mis kõlavad karbist välja ning hoiavad algaja motivatsiooni kõrgel.
+          </p>
+        </div>
+
+        <div class="card service" style="grid-column: span 4;">
+          <div class="service__icon" aria-hidden="true">🏃</div>
+          <h3>Sporditarvete ekspertnõu + kohene test</h3>
+          <p>
+            Jooksu-, pallimängu- ja veespordi varustus koos mõõtmise ja sobitamisega. Survestame palle, pingutame
+            reketid, reguleerime rullikutel raame ning õpetame hooldust, et varustus kestaks.
+          </p>
+          <p class="muted">
+            Proovialal saab testida haarduvust ja amortisatsiooni enne ostu — riskivaba valik.
+          </p>
+        </div>
+
+        <div class="card service" style="grid-column: span 4;">
+          <div class="service__icon" aria-hidden="true">🧩</div>
+          <h3>Hobikaubad & tehnika — robootika, maketid, stuudio</h3>
+          <p>
+            Toome kohale töökindlad komplektid LEGO®-ühilduvate robotite, Arduino/ESP moodulite ja maketitarvikutega.
+            Stuudiokategoorias: kontrollerid, helikaardid ja monitooring algajale produtsendile.
+          </p>
+          <p class="muted">
+            Kaasa tuleb juhendmaterjal eesti keeles ning võimalus osa võtta meie töötoast.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADVANTAGES -->
+  <section id="voimekus" class="section" aria-labelledby="voimekus-title">
+    <div class="wrap">
+      <div class="section__title">
+        <h2 id="voimekus-title">Miks kliendid jäävad — <em>Meie tugevused</em></h2>
+        <p class="muted">Erinevus ei ole loosung, vaid protsess, mida iga päev mõõdame.</p>
+      </div>
+
+      <div class="grid">
+        <div class="card" style="grid-column: span 4;">
+          <h3>Testitud sortiment</h3>
+          <p>
+            Valik valmib päris kasutuses. Iga tootekategooria juures on püsiv testgrupp (treenerid, helitehnikud, hobitajad),
+            kelle mõõdikud määravad, kas toode jääb valikusse. See hoiab riiulid fookuses ja hinnad stabiilsed.
+          </p>
+        </div>
+        <div class="card" style="grid-column: span 4;">
+          <h3>Kestlik tarneahel</h3>
+          <p>
+            Eelistame piirkondlikke hulgiladusid, ühisvedusid ja korduspakendit. Klient saab valida taastatud pillid ja
+            <em>buy-back</em> kava — nii vähendame jäätmeid ning toetame algajaid rahakotisõbralikumalt.
+          </p>
+        </div>
+        <div class="card" style="grid-column: span 4;">
+          <h3>Teenindus, mis õpetab</h3>
+          <p>
+            Me ei müü „musti kaste“. Selgitame, kuidas varustus töötab, milleks see mõeldud on ning kuidas hooldada.
+            Saad kaasa lühijuhendi eesti keeles ja video lingi praktiliste võtetega.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="protsess" class="section" aria-labelledby="protsess-title">
+    <div class="wrap">
+      <div class="section__title">
+        <h2 id="protsess-title">Kuidas sinu idee muutub teoks</h2>
+        <p class="muted">Kolm sammu — läbipaistev ja kiire.</p>
+      </div>
+
+      <div class="grid">
+        <div class="step" style="grid-column: span 4;">
+          <h3>1) Kuulame ja kaardistame</h3>
+          <p>
+            Kirjelda eesmärk: lava, treening või töölaud. Koostame vajaduste nimekirja, eelarvevahemiku ning ajakava.
+            Vajadusel broneerime testiala ja võtame mõõdud (nt trummimatid, rulookomplektid, trossid).
+          </p>
+        </div>
+
+        <div class="arrow" style="grid-column: span 12;">⬇</div>
+
+        <div class="step" style="grid-column: span 4;">
+          <h3>2) Soovitame ja seadistame</h3>
+          <p>
+            Paneme kokku 2–3 komplekti, mille saad kohapeal proovida. Seadistame pillid, pingutame reketid,
+            kalibreerime rullikud või ühendame stuudioketi töökindlaks.
+          </p>
+        </div>
+
+        <div class="arrow" style="grid-column: span 12;">⬇</div>
+
+        <div class="step" style="grid-column: span 4;">
+          <h3>3) Toetus pärast ostu</h3>
+          <p>
+            Saad hoolduskalendri ning juurdepääsu lühivideotele. Võtame kasutusse tagasi kasvust väikseks jäänud instrumendid
+            ja pakume soodustust järgmisele tasemele liikumisel.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXTRA: Missioon & väärtused (üks vabalt valitud plokk mitmekesisuseks) -->
+  <section class="section" aria-labelledby="missioon-title">
+    <div class="wrap">
+      <div class="section__title">
+        <h2 id="missioon-title">Meie eesmärk</h2>
+        <p class="muted">Teeme hobist harjumuse ja harjumusest oskuse.</p>
+      </div>
+
+      <div class="grid">
+        <div class="card" style="grid-column: span 6;">
+          <h3>Ligipääs kõigile tasemetele</h3>
+          <p>
+            Algajale — lihtsad komplektid ja rent, edasijõudnule — täienev varuosade riiul, professionaalile —
+            töökindlad tooteseeriad ja varuplaan. Meie poes on „õige varustus“ mitte staatiline objekt, vaid
+            teekond, mida koos sinuga juhime.
+          </p>
+        </div>
+        <div class="card" style="grid-column: span 6;">
+          <h3>Õiglased hinnad läbi mõõdetud laokulu</h3>
+          <p>
+            Kui toode seisab, siis me seda ei varu. Kasutame rotatsiooni ja hooaja-ennustusi, et hoida rahavoog
+            stabiilsena ja hinnad kliendisõbralikud. See on väike, kuid oluline erinevus, mida sa kassal näed.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY (visuaalne vaheldus) -->
+  <section class="section" aria-labelledby="galerii-title">
+    <div class="wrap">
+      <div class="section__title">
+        <h2 id="galerii-title">Häälestused, mis inspireerivad</h2>
+        <p class="muted">Hetked meie proovialast ja klientide lavadest.</p>
+      </div>
+      <div class="gallery" role="list">
+        <img src="https://images.unsplash.com/photo-1470229538611-16ba8c7ffbd7?q=80&w=800&auto=format&fit=crop" alt="Elektrikitarr prooviruumis" role="listitem" />
+        <img src="https://images.unsplash.com/photo-1511882150382-421056c89033?q=80&w=800&auto=format&fit=crop" alt="Trummikomplekt laval" role="listitem" />
+        <img src="https://images.unsplash.com/photo-1516570161787-2fd917215a3d?q=80&w=800&auto=format&fit=crop" alt="DJ ja produtsendi stuudio" role="listitem" />
+        <img src="https://images.unsplash.com/photo-1517935706615-2717063c2225?q=80&w=800&auto=format&fit=crop" alt="Rulluisud rajal" role="listitem" />
+        <img src="https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?q=80&w=800&auto=format&fit=crop" alt="Jalgpallivarustus" role="listitem" />
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800&auto=format&fit=crop" alt="Kõrvaklapid ja helitehnika" role="listitem" />
+        <img src="https://images.unsplash.com/photo-1483721310020-03333e577078?q=80&w=800&auto=format&fit=crop" alt="Akustiline kitarr detail" role="listitem" />
+        <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=800&auto=format&fit=crop" alt="Teniserekett ja pallid" role="listitem" />
+        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=800&auto=format&fit=crop" alt="Tantsusaal treeningu ajal" role="listitem" />
+        <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=800&auto=format&fit=crop" alt="Süntesaator ja kontroller" role="listitem" />
+        <img src="https://images.unsplash.com/photo-1546483875-ad9014c88eba?q=80&w=800&auto=format&fit=crop" alt="Mägiratas ja varustus" role="listitem" />
+        <img src="main1.jpg" alt="Maketitarvikud laual" role="listitem" />
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section" aria-labelledby="cta-title">
+    <div class="wrap">
+      <div class="section__title">
+        <h2 id="cta-title">Valmis alustama?</h2>
+        <p class="muted">Kirjuta meile — vastame personaalse soovitusega.</p>
+      </div>
+      <div class="card" style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+        <p class="muted" style="margin:0">
+          Kirjad saabuvad otse meie meeskonnale. Hoidume liigsetest andmetest ning ei küsi telefoni — vastame e-postile.
+        </p>
+        <button class="btn" data-open-modal="#contact" aria-haspopup="dialog">Ava kontaktivorm</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER / CONTACTS -->
+  <footer id="kontaktid" class="footer" aria-labelledby="kontaktid-title">
+    <div class="wrap footgrid">
+      <div>
+        <h3 id="kontaktid-title" style="margin-top:0">Võta meiega ühendust</h3>
+        <p class="address">
+IDEA FACTORY OÜ
+Pilliroo tn 39
+76401 Laagri alevik
+E-post: <a href="mailto:piret@piretideafactory.org">piret@piretideafactory.org</a>
+        </p>
+        <p class="muted">
+          Me austame sinu privaatsust: kogume üksnes vormis sisestatud andmeid eesmärgil vastata sinu päringule. Andmeid ei jagata kolmandatele osapooltele turunduseks.
+        </p>
+        <button class="btn btn--ghost" data-open-modal="#contact">Kirjuta meile</button>
+      </div>
+
+      <div>
+        <h4>Kiirlingid</h4>
+        <ul class="list" role="list">
+          <li><a href="#meist">Meie lugu</a></li>
+          <li><a href="#teenused">Teenused</a></li>
+          <li><a href="#protsess">Tööprotsess</a></li>
+          <li><a href="#galerii-title">Galerii</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Kasutustingimused</h4>
+        <ul class="list" role="list">
+          <li><a href="#" aria-label="Tingimused (näidislink)">Tingimused</a></li>
+          <li><a href="#" aria-label="Privaatsusteatis (näidislink)">Privaatsus</a></li>
+          <li><a href="#" aria-label="Küpsiste eelistused (näidislink)">Küpsised</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="wrap" style="padding-top:0">
+      <p class="muted" style="font-size:13px">
+        © <span id="year"></span> IDEA FACTORY OÜ • Kaubagrupid: Sporditarbed, Hobikaubad, Muusikainstrumendid.
+      </p>
+    </div>
+  </footer>
+
+  <!-- MODAL: CONTACT FORM (ilma telefoniväljata) -->
+  <div class="modal" id="contact" aria-hidden="true" role="dialog" aria-labelledby="contact-title" aria-modal="true">
+    <div class="dialog" role="document">
+      <div class="dialog__head">
+        <h3 id="contact-title" style="margin:0">Saada meile sõnum</h3>
+        <button class="x" data-close-modal aria-label="Sulge">✕</button>
+      </div>
+
+      <form class="form" id="contactForm" novalidate>
+        <div class="full">
+          <label for="topic">Teema</label>
+          <input id="topic" name="topic" type="text" inputmode="text" placeholder="Näiteks: Proovialale broneerimine" required aria-required="true" />
+        </div>
+
+        <div>
+          <label for="name">Sinu nimi</label>
+          <input id="name" name="name" type="text" inputmode="text" placeholder="Ees- ja perekonnanimi" required aria-required="true" />
+        </div>
+
+        <div>
+          <label for="email">E-posti aadress</label>
+          <input id="email" name="email" type="email" inputmode="email" placeholder="nimi@post.ee" required aria-required="true" />
+        </div>
+
+        <div class="full">
+          <label for="message">Sõnum</label>
+          <textarea id="message" name="message" placeholder="Kirjelda, mida soovid proovida või millist nõu vajad." required aria-required="true"></textarea>
+        </div>
+
+        <div class="full" style="display:flex; gap:10px; align-items:center; justify-content:flex-end">
+          <button type="button" class="btn btn--ghost" data-close-modal>Katkesta</button>
+          <button type="submit" class="btn">Saada</button>
+        </div>
+
+        <!-- ligipääsetavuse märkused -->
+        <p class="muted full" style="font-size:12px; margin:0">
+          Esitades nõustud, et kasutame sinu andmeid üksnes päringule vastamiseks ning säilitame neid minimaalselt vajaliku aja. Telefoni ei küsita.
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: SUCCESS -->
+  <div class="modal" id="success" aria-hidden="true" role="dialog" aria-labelledby="success-title" aria-modal="true">
+    <div class="dialog" role="document">
+      <div class="dialog__head">
+        <h3 id="success-title" style="margin:0">Sõnum saadetud</h3>
+        <button class="x" data-close-modal aria-label="Sulge">✕</button>
+      </div>
+      <div class="card" style="background:#12231a; border-color:#234b32">
+        <p style="margin:0; color:#bdf6d2">Aitäh! Oleme sinu kirja kätte saanud. Vastame e-postile <strong>48 tunni</strong> jooksul (tööpäeviti).</p>
+      </div>
+      <div style="display:flex; justify-content:flex-end; margin-top:14px">
+        <button class="btn" data-close-modal>Suurepärane</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* --------------------------------
+       VÄIKE JS: sujuv kerimine + modaali loogika + vormi kontroll
+       Kõik inline – ei sõltu välistest failidest
+       -------------------------------- */
+
+    // Aasta jaluses
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Sujuv kerimine menüülinkidele
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const targetId = a.getAttribute('href');
+        if(targetId.length > 1){
+          const node = document.querySelector(targetId);
+          if(node){
+            e.preventDefault();
+            node.scrollIntoView({behavior:'smooth', block:'start'});
+            history.replaceState(null,'',targetId);
+          }
+        }
+      });
+    });
+
+    // Modaalide avamine/sulgemine (kontakt & success)
+    const openers = document.querySelectorAll('[data-open-modal]');
+    const closers = document.querySelectorAll('[data-close-modal]');
+    const modals = new Map();
+
+    document.querySelectorAll('.modal').forEach(m=>{
+      modals.set('#'+m.id, m);
+      m.addEventListener('click', (e)=>{
+        if(e.target === m){ closeModal('#'+m.id); }
+      });
+    });
+
+    openers.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const sel = btn.getAttribute('data-open-modal');
+        openModal(sel);
+      });
+    });
+    closers.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const dlg = btn.closest('.modal');
+        if(dlg){ closeModal('#'+dlg.id); }
+      });
+    });
+
+    function openModal(selector){
+      const m = modals.get(selector);
+      if(!m) return;
+      m.setAttribute('data-open', 'true');
+      m.setAttribute('aria-hidden', 'false');
+      const focusable = m.querySelector('input, textarea, button');
+      if(focusable){ setTimeout(()=>focusable.focus(), 50); }
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(selector){
+      const m = modals.get(selector);
+      if(!m) return;
+      m.removeAttribute('data-open');
+      m.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    // Lihtne vormi valideerimine (täielikult kliendipoolne; ei saadeta päriselt võrku)
+    const form = document.getElementById('contactForm');
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+
+      // elementide viited
+      const topic = document.getElementById('topic');
+      const name  = document.getElementById('name');
+      const email = document.getElementById('email');
+      const msg   = document.getElementById('message');
+
+      let ok = true;
+
+      [topic,name,email,msg].forEach(el=>{
+        if(!el.value.trim()){
+          el.style.borderColor = '#ff5a5f';
+          ok = false;
+        } else {
+          el.style.borderColor = '#30303c';
+        }
+      });
+
+      // elementaarne e-posti kontroll
+      if(email.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)){
+        email.style.borderColor = '#ff5a5f';
+        ok = false;
+      }
+
+      if(!ok){ 
+        // ligipääsetav teade
+        alert('Palun täida kõik väljad korrektselt. Telefoni ei ole vaja — piisab e-postist.');
+        return; 
+      }
+
+      // Näidis "edukas saatmine" – ei kogu üleliigseid andmeid; vastab Apple juhistele
+      closeModal('#contact');
+      openModal('#success');
+
+      // Vormikatkendi lähtestamine
+      form.reset();
+    });
+
+    // Klaviatuuri ESC sulgeb aktiivse modaali
+    window.addEventListener('keydown', (e)=>{
+      if(e.key==='Escape'){
+        document.querySelectorAll('.modal[data-open="true"]').forEach(m=>{
+          closeModal('#'+m.id);
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>
